@@ -1,10 +1,3 @@
-[package]
-name = "rust-playground"
-version = "0.1.0"
-edition = "2021"
+workspace = { members = ["all_values_as_string", "libtest"] }
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[dependencies]
-all_values_as_string = {path= "src/all_values_as_string" }
-chrono = { version = "0.4", features = ["serde"] }

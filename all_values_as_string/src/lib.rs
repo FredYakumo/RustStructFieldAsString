@@ -4,7 +4,6 @@ use proc_macro::TokenStream;
 use quote::quote;
 use syn::{parse_macro_input, DeriveInput};
 
-
 #[proc_macro_derive(AllFieldNamesAsString, attributes(StructFieldAsString))]
 pub fn all_field_name_as_str_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
@@ -27,8 +26,7 @@ pub fn all_field_name_as_str_derive(input: TokenStream) -> TokenStream {
             if f.attrs.iter().any(|attr| attr.path().is_ident("StructFieldAsString")) {
                 // Field has the `#[helper]` attribute, assume it implements the trait
                 quote! {
-                    let field_str = <_ as AllFieldNamesAsString>::get_all_field_names_as_string(&self.#ident);
-                    field_parts.push(field_str);
+                    field_parts.push(self.#ident.get_all_field_names_as_string());
                 }
             } else {
                 // Field does not have the `#[helper]` attribute, use the field name as string
@@ -40,7 +38,7 @@ pub fn all_field_name_as_str_derive(input: TokenStream) -> TokenStream {
         });
 
     let expanded = quote! {
-        impl AllFieldNamesAsString for #name {
+        impl #name {
             fn get_all_field_names_as_string(&self) -> String {
                 let mut field_parts: Vec<String> = Vec::new();
                 #(#field_parts)*
@@ -74,8 +72,7 @@ pub fn all_values_as_str_derive(input: TokenStream) -> TokenStream {
             if f.attrs.iter().any(|attr| attr.path().is_ident("StructFieldAsString")) {
                 // Field has the `#[helper]` attribute, assume it implements the trait
                 quote! {
-                    let field_str = <_ as AllValuesAsString>::get_all_values_as_string(&self.#ident);
-                    field_parts.push(field_str);
+                    field_parts.push(self.#ident.get_all_values_as_string());
                 }
             } else if f.attrs.iter().any(|attr| attr.path().is_ident("NumericField")) {
                 quote! {
@@ -97,7 +94,7 @@ pub fn all_values_as_str_derive(input: TokenStream) -> TokenStream {
         });
 
     let expanded = quote! {
-        impl AllValuesAsString for #name {
+        impl #name {
             fn get_all_values_as_string(&self) -> String {
                 let mut field_parts: Vec<String> = Vec::new();
                 #(#field_parts)*

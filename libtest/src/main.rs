@@ -1,14 +1,6 @@
 use all_values_as_string::{AllFieldNamesAsString, AllValuesAsString};
 use chrono::{NaiveDateTime, Utc};
 
-pub trait AllFieldNamesAsString {
-    fn get_all_field_names_as_string(&self) -> String;
-}
-
-pub trait AllValuesAsString {
-    fn get_all_values_as_string(&self) -> String;
-}
-
 #[derive(AllFieldNamesAsString, AllValuesAsString)]
 pub struct Foo {
     #[NumericField]
